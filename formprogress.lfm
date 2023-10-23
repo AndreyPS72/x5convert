@@ -1,0 +1,10 @@
+object FormMain: TFormMain
+  Left = 700
+  Height = 118
+  Top = 343
+  Width = 917
+  BorderStyle = bsDialog
+  Caption = 'FormMain'
+  DesignTimePPI = 120
+  LCLVersion = '3.99.0.0'
+end
