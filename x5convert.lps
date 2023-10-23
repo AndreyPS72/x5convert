@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="29" Y="22"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
       </Unit>
       <Unit>
         <Filename Value="formprogress.pas"/>
@@ -19,16 +19,16 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="23" Y="12"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
       </Unit>
       <Unit>
         <Filename Value="converter.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="37"/>
-        <CursorPos Y="70"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="49"/>
+        <CursorPos X="3" Y="66"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="..\lazarus\fpcsrc\packages\paszlib\src\zipper.pp"/>
@@ -58,8 +58,147 @@
         <CursorPos X="3" Y="119"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="odfproc.pas"/>
+        <UnitName Value="ODFProc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="5278"/>
+        <CursorPos Y="5290"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\lazarus\lazarus\components\lazutils\laz2_dom.pas"/>
+        <UnitName Value="Laz2_DOM"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="622"/>
+        <CursorPos X="15" Y="636"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="48" TopLine="32"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="63" Column="14" TopLine="48"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="58" Column="7" TopLine="46"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="104" Column="7" TopLine="78"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="58" Column="41" TopLine="45"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="66" Column="11" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="odfproc.pas"/>
+        <Caret Line="1008" Column="15" TopLine="1008"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="71" TopLine="48"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="95" Column="25" TopLine="76"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="108" TopLine="93"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="96" TopLine="85"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="97" TopLine="85"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="98" TopLine="85"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="96" TopLine="85"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="99" Column="19" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="21"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="102" TopLine="90"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="56" TopLine="46"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="81" Column="29" TopLine="56"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="56" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="57" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="58" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="59" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="67" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="56" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="57" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="58" TopLine="43"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="60" TopLine="49"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="62" TopLine="49"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="66" TopLine="49"/>
+      </Position>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode="default">
@@ -71,11 +210,10 @@
       </Modes>
     </RunParams>
     <HistoryLists>
-      <List Name="WorkingDirectory" Type="File" Count="1"/>
       <List Name="LaunchingApplication" Type="File" Count="1">
         <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
       </List>
-      <List Name="CommandLineParameters" Count="2">
+      <List Name="CommandLineParameters" Count="1">
         <Item1 Value="SM_STB_03_2023.x5"/>
       </List>
     </HistoryLists>
@@ -87,7 +225,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="converter.pas"/>
-        <Line Value="70"/>
+        <Line Value="56"/>
       </Item>
     </BreakPoints>
   </Debugging>

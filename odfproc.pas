@@ -713,9 +713,9 @@ type
     FName     : string;       //имя таблицы атрибут table:name
     FDocument : TXMLDocument; //документ в котором расположена таблица
     FRoot     : TDOMNode;     //корневая нода table:table
+  public
     constructor Create(XMLDoc: TXMLDocument; TableName: string);
     destructor Destroy; override;
-  public
     //поиск и замена текста Search на Replace в строке ARow таблицы шаблона
     function FindAndReplace(ARow: integer; Search, Replace: string): boolean;
     //клонирование строки таблицы ARow
@@ -743,14 +743,15 @@ type
     FRoot : TDOMnode;         //Корень дерева данных
     FName : string;
 
-    constructor Create;
-    destructor Destroy;
-
     procedure GenerateContent;
     procedure GenerateManifest;
     procedure GenerateStyles;
     procedure GenerateMeta; // получаем основную таблицу
     procedure InsertXMLNS(var RootNode: TDOMElement);
+
+  public
+    constructor Create;
+    destructor Destroy; override;
 
     property Styles      : TXMLDocument read FStyles write FStyles;
     property Content     : TXMLDocument read FContent write FContent;
@@ -758,6 +759,7 @@ type
     property Meta        : TXMLDocument read FMeta write FMeta;
     property Settings    : TXMLDocument read FSettings write FSettings;
     property TempDir     : string read FTempDir write FTempDir;
+
   public // свойства и методы доступные для изменения, в том числе у объектов-потомков
 
     // закрывает документ
@@ -905,7 +907,7 @@ type
   public
     FCashPages: array of TPageNumber;
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     function LoadFromFile(FileName: string): boolean;
     function SavetoFile(FileName: string): boolean;//сохранение документа
@@ -996,6 +998,10 @@ type
     function  GetNewTableName() : String;// опубликована для получения таблицы по названию
     function  GetListofTables: TStrings;// для получения списка  таблиц
     property TablesCount : integer read GetTablesCount;
+
+    // поиск текста во всех вложенных нодах
+    function FindTextInChildNodes(Node: TDOMNode; Search: UnicodeString): TDOMNode;
+
   end;
 
 type
@@ -1010,7 +1016,8 @@ type
     procedure GenerateManifest;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
+
     function LoadFromFile(FileName: string): boolean;
     // генерация документа .ods
     procedure GenerateDocument(DocumentName: string=DefaultOdsFileName;
@@ -1034,9 +1041,8 @@ type
 var ODT: TOdt;
 
 implementation
+uses LazUTF8, LazFileUtils, LazUtilities;
 
-{ для отладки }
-uses main;
 
 //--------------------- TPositiveInteger
 operator:=(val: Integer)r: TPositiveInteger;
@@ -1184,6 +1190,7 @@ end;
 function Assembledtext(node: TDOMNode): string;
 var cnode: TDOMNode;
 begin
+   Result:='';
    cnode:= node.FirstChild;
    while assigned(cnode) do
    begin
@@ -1735,13 +1742,13 @@ end;  }
 
 function TPage.InsertTable(Cols, Rows: integer; TableName: string): TOdtTable;
 begin
-  FParent.InsertTable(FNextPage.PreviousSibling,Cols, Rows, TableName);
+  Result:=FParent.InsertTable(FNextPage.PreviousSibling,Cols, Rows, TableName);
 end;
 
 function TPage.InsertTable(InsertinBefore: TDOMnode; Cols, Rows: integer;
   TableName: string): TOdtTable;
 begin
-  FParent.InsertTable(InsertinBefore ,Cols, Rows, TableName);
+  Result:=FParent.InsertTable(InsertinBefore ,Cols, Rows, TableName);
 end;
 
 procedure TPage.DeleteTable(TableName: string);
@@ -2202,6 +2209,8 @@ begin
 
         newStyleName:= StyleName;
         //разобьем текст на цифры и символы
+        Sybols:='';
+        Digit:='';
         for i:=1 to length(newStyleName) do
         begin
         if not isDigit(newStyleName[i]) then
@@ -3001,8 +3010,9 @@ end;
 
 function TOdt.GetTable(TableName: string): TOdtTable;
 begin
-  // метод создан для инкапсуляции стандартного метода GetTable
-  Result := TOdtTable(inherited GetTable(TableName));
+  Result := TOdtTable.Create(FContent,TableName);
+  if not Assigned(Result) then
+    MessageDlg('Ошибка','Таблица с названием "'+TableName+'" не найдена в документе',mtError,[mbOK],0);
 end;
 
 function TOdt.GetNewTableName: String;
@@ -3042,6 +3052,34 @@ begin
         end;
     end;
 end;
+
+
+// поиск текста во всех вложенных нодах
+function TOdt.FindTextInChildNodes(Node: TDOMNode; Search: UnicodeString): TDOMNode;
+var
+  ChildNode: TDOMNode;
+begin
+  Result:= nil;
+  if Node = nil then
+     Node := FRoot;
+
+  ChildNode := Node.FirstChild;
+  while ChildNode<>nil do
+  begin
+    Result:=FindTextInChildNodes(ChildNode, Search);
+    if Result<>nil then
+       Exit;
+    ChildNode := ChildNode.NextSibling;
+  end;
+
+  if Pos(Search, Node.TextContent)>0 then begin
+//         Node.TextContent := '';
+     Result:=Node;
+  end;
+end;
+
+
+
 
 function TOdt.ContentFindFntFace(FontName: string): TDOMNode;
 var FontList: TDOMNodeList;
@@ -3490,7 +3528,7 @@ end;
 
 function TOdt.InsertTable(Cols, Rows: integer; TableName : string) : TOdtTable;
 begin
-  InsertTable(FRoot.LastChild,Cols, Rows, TableName);
+  Result:=InsertTable(FRoot.LastChild,Cols, Rows, TableName);
 end;
 
 function TOdt.InsertTable(InsertinBefore: TDOMnode; Cols, Rows: integer
@@ -3499,7 +3537,7 @@ var
   tablename : string;
 begin
   tablename := SearchFreeStyleName(DefaultTableName+'1');
-  InsertTable(InsertinBefore, Cols, Rows, tablename);
+  Result:=InsertTable(InsertinBefore, Cols, Rows, tablename);
 end;
 
 function TOdt.InsertTable(Cols, Rows: integer) : TOdtTable;
@@ -3507,17 +3545,26 @@ var
   tablename : string;
 begin
   tablename := SearchFreeStyleName(DefaultTableName+'1');
-  InsertTable(FRoot, Cols, Rows, tablename);
+  Result:=InsertTable(FRoot, Cols, Rows, tablename);
 end;
 
 function TOdt.InsertTable(InsertinBefore: TDOMnode; Cols, Rows: integer;
   TableName: string) : TOdtTable;
 var Root, Node: TDOMNode;
     i,j:integer;
+    s: UnicodeString;
 begin
+
   //добавление пустой таблицы  в документ
-  if CheckDefaultTableStyles(TableName) then
-  begin
+  if not CheckDefaultTableStyles(TableName) then
+     SetDefaultTableStyles(TableName);
+
+  // Вставлять в элемент верхнего уровня
+  while (InsertinBefore.ParentNode<>nil) do begin
+        if InsertinBefore.ParentNode.NodeName ='office:text' then break;
+        InsertinBefore:=InsertinBefore.ParentNode;
+  end;
+
       Root:=FRoot;
       Node:=FContent.CreateElement('table:table');
       TDOMElement(Node).SetAttribute('table:name',TableName);
@@ -3544,13 +3591,44 @@ begin
               Root:=Root.AppendChild(Node).ParentNode.ParentNode;//Root = table:table-row
             end;
         end;
-  end else
-    begin
-      SetDefaultTableStyles(TableName);
-      InsertTable(Cols, Rows, TableName);
-    end;
-
+(*
+      //добавление пустой таблицы  в документ
+      if CheckDefaultTableStyles(TableName) then
+      begin
+          Root:=FRoot;
+          Node:=FContent.CreateElement('table:table');
+          TDOMElement(Node).SetAttribute('table:name',TableName);
+          TDOMElement(Node).SetAttribute('table:style-name',TableName+DefaultTableStyle);
+          Root:=InsertinBefore.ParentNode.InsertBefore(Node,InsertinBefore);
+          Node:=FContent.CreateElement('table:table-column');
+          TDOMElement(Node).SetAttribute('table:style-name',TableName+DefaultColStyle);
+          TDOMElement(Node).SetAttribute('table:number-columns-repeated',IntToStr(Cols));
+          Root:=Root.AppendChild(Node);//Root = table:table-column
+          //вставляем строки и ячейки
+          for i:=1 to Rows do
+            begin
+              Root:=Root.ParentNode;//Root = table:table
+              Node:=FContent.CreateElement('table:table-row');
+              Root:=Root.AppendChild(Node); //Root = table:table-row
+              for j:=1 to Cols do
+                begin
+                  Node:=FContent.CreateElement('table:table-cell');
+                  TDOMElement(Node).SetAttribute('table:style-name',TableName+DefaultCellStyle);
+                  TDOMElement(Node).SetAttribute('office:value-type','string');
+                  Root:=Root.AppendChild(Node);//Root = table:table-cell
+                  Node:=FContent.CreateElement('text:p');
+                  TDOMElement(Node).SetAttribute('text:style-name','Standard');
+                  Root:=Root.AppendChild(Node).ParentNode.ParentNode;//Root = table:table-row
+                end;
+            end;
+      end else
+        begin
+          SetDefaultTableStyles(TableName);
+          InsertTable(Cols, Rows, TableName);
+        end;
+*)
   Result  := GetTable(TableName);
+
 end;
 
 procedure TOdt.DeleteTable(TableName: string);
@@ -3586,6 +3664,7 @@ function TOdt.ShowPartOfDocument(Doc: TFileType  = ftContent;editor: string = 'd
 var Proc: TProcess;
     f_name: string;
 begin
+  Result:=False;
   if DocumentLoaded then
   begin
     SaveState();
@@ -3665,7 +3744,7 @@ begin
       break;
     end;
   d:=UTF8Copy(s,1,r-1);
-  Result:=StrToDouble(d);
+  Result:=LazUtilities.StrToDouble(d);
 end;
 
 // закодирование типа TLength в строку
@@ -4005,6 +4084,8 @@ var AutoStylesNode, n, x: TDOMNode;
       n:=AutoStylesNode.InsertBefore(Node,n.NextSibling)
     else
       n:=AutoStylesNode.AppendChild(Node);
+
+    Result:=Node;
   end;
 
 begin
@@ -4970,7 +5051,7 @@ begin
     FreeAndNil(FSettings);
   end;
   FName :='';
-  DeleteDirectory(TempDir, true);
+  Result:=DeleteDirectory(TempDir, true);
 end;
 
 function TOdf.LoadPartOfDocument(FileName: string; Doc: TFileType): boolean;
@@ -5116,7 +5197,9 @@ begin
      begin
         //Выполним команду печати
         AProcess := TProcess.Create(nil);
-        AProcess.CommandLine := 'libreoffice4.0 --invisible -p "'+FileName+'"';
+        AProcess.Executable := 'libreoffice4.0';
+        AProcess.Parameters.Add('--invisible');
+        AProcess.Parameters.Add('-p "'+FileName+'"');
         AProcess.Options := AProcess.Options + [poWaitOnExit];
         AProcess.Execute;
         AProcess.Free;
