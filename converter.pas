@@ -16,8 +16,13 @@ uses SysUtils
      , Laz2_DOM
      , Laz2_XMLRead
      , Laz2_XMLUtils
-     , ODFProc
      , StrUtils
+     , fpspreadsheet
+//     , fpsopendocument
+     , fpstypes
+     , lazutf8
+     , xlsxooxml
+     , xlsxml
      ;
 
 
@@ -43,14 +48,14 @@ end;
 
 const DataBufLen = 8*1024;
 var DataBuf: array [0..DataBufLen-1] of double;
+    samples_len: integer;
+    sample_rate: double;
 
-const TemplateFile = 'x5.ods';
-const OutputFile = 'data.ods';
-
-
+(*
 procedure ExportWaveformToExcel(const aDir: string; var DataBuf: array of double; const DataBufLen: integer; sample_rate: double);
 var ODS: TOds;
     i: integer;
+    tbl: TOdfTable;
 begin
 
 ODS := nil;
@@ -63,13 +68,98 @@ try
        Abort;
   end;
 
+  tbl := ODS.GetTable('Waveform');
+//  ODS.FindAndReplace('_ПолноеНаименование','CompanyLongName');
+
 //  ODS.GenerateDocument(OutputFile, aDir);
+//  ODS.GenerateDocument;
+    ODS.ShowDocument();
 except
 end;
 
 FreeAndNil(ODS);
 
 end;
+*)
+
+(*
+procedure ExportWaveformToExcel(const aDir: string; var DataBuf: array of double; const DataBufLen: integer; sample_rate: double);
+var i: integer;
+    Excel: OLEVariant;
+    Doc: OLEVariant;
+const OutputFile = 'data.xlsx';
+begin
+
+Excel:= Unassigned;
+CoInitialize(nil);
+
+try
+   Excel:=GetActiveOLEObject('Excel.Application');
+   Excel.Application.Visible := True;
+except
+  try
+    Excel := CreateOLEObject('Excel.Application');
+    Excel.Application.Visible := True;
+  except
+    // Excel Not Installed
+    Abort;
+  end;
+end;
+
+try
+    if not FileExists(TemplateFile) then
+       Abort;
+
+    // Открываю файл по шаблону
+    Doc:=Excel.Application.Workbooks.Add(UTF8Decode(TemplateFile));
+
+except
+end;
+
+Excel.Application.ScreenUpdating := False;
+
+
+Excel.Application.ScreenUpdating := True;
+Doc:= Unassigned;
+Excel:= Unassigned;
+
+end;
+*)
+
+
+
+procedure ExportWaveformToExcel(const aDir: string);
+var i: integer;
+    wb: TsWorkbook;
+    ws: TsWorksheet;
+    c: PCell;
+const TemplateFile = './x5.xlsx';
+const OutputFile = 'data.xlsx';
+begin
+
+// Создание рабочей книги
+wb := TsWorkbook.Create;
+try
+   if FileExists(TemplateFile) then begin
+      wb.ReadFromFile(TemplateFile, sfOOXML);
+      ws := wb.GetFirstWorksheet();
+   end else begin
+      ws := wb.AddWorksheet('Waveform');
+   end;
+
+   // Записываем ячейки
+   for i:=0 to samples_len-1 do begin
+       ws.WriteNumber(i, 0, double(i)/sample_rate);
+       ws.WriteNumber(i, 1, DataBuf[i]);
+   end;
+
+   // Сохраняем электронную таблицу в файл
+   wb.WriteToFile(ExpandFileName(OutputFile, aDir), sfOOXML, True);
+except
+end;
+wb.Free;
+end;
+
 
 
 function StrToFloatUniversal(aStr: string): double;
@@ -89,8 +179,6 @@ procedure CheckDirForData(const aDir: string);
 var Doc: TXMLDocument;
     Node: TDOMNode;
     F: longint;
-    len: integer;
-    sample_rate: double;
 begin
 
 if not FileExists(ExpandFileName('procheck_data_signal.xml', aDir)) then
@@ -110,10 +198,10 @@ try
    end;
 
    F:=FileOpen(ExpandFileName('procheck_data_signal_timestamp.bin', aDir), fmOpenRead);
-   len:=FileRead (F, DataBuf, DataBufLen*sizeof(double));
+   samples_len:=FileRead (F, DataBuf, DataBufLen*sizeof(double)) div sizeof(double);
    FileClose(F);
 
-   ExportWaveformToExcel(aDir, DataBuf, len div sizeof(double), sample_rate);
+   ExportWaveformToExcel(aDir);
 
 except
 end;
