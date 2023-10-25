@@ -1,6 +1,6 @@
 unit rFFT;
 
-{$mode Delphi}
+{$MODE DelphiUnicode}{$CODEPAGE UTF8}{$H+}
 
 interface
 uses

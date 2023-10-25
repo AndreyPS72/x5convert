@@ -5,15 +5,15 @@ object FormMain: TFormMain
   Width = 480
   ActiveControl = BitBtnStop
   BorderIcons = []
-  BorderStyle = bsDialog
+  BorderStyle = bsNone
   Caption = 'Progress'
   ClientHeight = 37
   ClientWidth = 480
   DesignTimePPI = 120
+  FormStyle = fsSplash
   Position = poScreenCenter
   LCLVersion = '3.99.0.0'
   OnClose = FormClose
-  OnShow = FormShow
   object pbProgress: TProgressBar
     Left = 0
     Height = 37
@@ -32,5 +32,18 @@ object FormMain: TFormMain
     Caption = 'Stop'
     TabOrder = 1
     OnClick = BitBtnStopClick
+  end
+  object OpenDialogFile: TOpenDialog
+    Title = 'Select .x5 file'
+    DefaultExt = '.*.x5'
+    Filter = '*.x5|*.x5'
+    Left = 248
+    Top = 8
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    Left = 303
+    Top = 8
   end
 end

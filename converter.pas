@@ -156,7 +156,7 @@ try
    // Записываем ячейки
    for i:=0 to samples_len-1 do begin
        ws.WriteNumber(i, 0, double(i)/sample_rate);
-       ws.WriteNumber(i, 1, DataBuf[i]);
+       ws.WriteNumber(i, 1, DataBuf[i] * 9.81);
    end;
 
 
@@ -172,7 +172,7 @@ try
    // Записываем ячейки
    for i:=0 to samples_len-1 do begin
        ws.WriteNumber(i, 0, dF * i);
-       ws.WriteNumber(i, 1, DataBuf[i]);
+       ws.WriteNumber(i, 1, DataBuf[i] * 9.81);
    end;
 
 
@@ -271,6 +271,35 @@ end;
 
 
 
+var count_files: integer;
+
+procedure CountFiles(aDir: string);
+Var Info : TSearchRec;
+begin
+
+try
+
+    If FindFirst (aDir+'/*',faDirectory, Info)=0 then begin
+
+      Repeat
+          if (Info.Name<>'.') and
+             (Info.Name<>'..') then begin
+
+             inc(count_files);
+
+             CountFiles(ExpandFileName(Info.Name, aDir));
+          end;
+
+      Until FindNext(info)<>0;
+
+      FindClose(Info);
+
+    end;
+except
+end;
+
+end;
+
 
 
 function ConvertX5File(const aFileName: string): integer;
@@ -279,11 +308,18 @@ begin
 if not FileExists(aFileName) then
    Exit(1);
 
+FormMain.Show;
+Application.ProcessMessages;
+
 FilesDir:=ExtractFileName(aFileName);
 if Pos('.', FilesDir)>0 then
    FilesDir:=Copy(FilesDir, 1, Pos('.', FilesDir)-1);
 FilesDir:='./'+ FilesDir;
 UnZip(aFileName, FilesDir);
+
+count_files:=0;
+CountFiles(FilesDir);
+FormMain.pbProgress.Max:=count_files;
 
 ScanFilesDir(FilesDir);
 

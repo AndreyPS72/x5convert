@@ -2,10 +2,13 @@ unit formprogress;
 
 {$MODE DelphiUnicode}{$CODEPAGE UTF8}{$H+}
 
+{$OPTIMIZATION OFF, NOREGVAR, UNCERTAIN, NOSTACKFRAME, NOPEEPHOLE, NOLOOPUNROLL, NOTAILREC, NOORDERFIELDS, NOFASTMATH, NOREMOVEEMPTYPROCS, NOCSE, NODFA} //debug Для отладки
+
 interface
 
 uses
-    Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Buttons;
+    Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Buttons,
+    ExtCtrls;
 
 type
 
@@ -13,10 +16,12 @@ type
 
     TFormMain = class(TForm)
       BitBtnStop: TBitBtn;
+      OpenDialogFile: TOpenDialog;
       pbProgress: TProgressBar;
+      Timer1: TTimer;
       procedure BitBtnStopClick(Sender: TObject);
       procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-      procedure FormShow(Sender: TObject);
+      procedure Timer1Timer(Sender: TObject);
     private
 
     public
@@ -47,13 +52,26 @@ begin
   CloseAction:=caFree;
 end;
 
-procedure TFormMain.FormShow(Sender: TObject);
+
+procedure TFormMain.Timer1Timer(Sender: TObject);
+var res: integer;
 begin
 
+  Timer1.OnTimer:=nil;
+  res:=1;
+
   if Application.ParamCount>0 then begin
-//     Halt(ConvertX5File(Application.Params[1]));
-     ConvertX5File(Application.Params[1])
+     res:=ConvertX5File(Application.Params[1]);
+  end else begin
+    if OpenDialogFile.Execute then begin
+       res:=ConvertX5File(OpenDialogFile.FileName);
+    end
   end;
+
+Application.Terminate;
+while not Application.Terminated do
+      Application.ProcessMessages;
+Halt(res);
 end;
 
 end.
