@@ -41,11 +41,17 @@
         <Filename Value="formprogress.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormMain"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
         <Filename Value="converter.pas"/>
         <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="rfft.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="rFFT"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -58,7 +64,9 @@
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
         <IncludeAssertionCode Value="True"/>
+        <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
     <CodeGeneration>

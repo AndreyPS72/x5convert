@@ -6,12 +6,12 @@ unit converter;
 
 interface
 
-
 function ConvertX5File(const aFileName: string): integer;
 
 
 implementation
-uses SysUtils
+uses Forms
+     , SysUtils
      , Zipper
      , Laz2_DOM
      , Laz2_XMLRead
@@ -23,6 +23,8 @@ uses SysUtils
      , lazutf8
      , xlsxooxml
      , xlsxml
+     , rFFT
+     , formprogress
      ;
 
 
@@ -46,8 +48,7 @@ end;
 
 
 
-const DataBufLen = 8*1024;
-var DataBuf: array [0..DataBufLen-1] of double;
+var DataBuf: TReal64ArrayZeroBased;
     samples_len: integer;
     sample_rate: double;
 
@@ -133,6 +134,7 @@ var i: integer;
     wb: TsWorkbook;
     ws: TsWorksheet;
     c: PCell;
+    dF: double;
 const TemplateFile = './x5.xlsx';
 const OutputFile = 'data.xlsx';
 begin
@@ -147,11 +149,32 @@ try
       ws := wb.AddWorksheet('Waveform');
    end;
 
+   for i:=0 to samples_len-1 do begin
+         DataBuf[i]:=sin(i*0.01);
+   end;
+
    // Записываем ячейки
    for i:=0 to samples_len-1 do begin
        ws.WriteNumber(i, 0, double(i)/sample_rate);
        ws.WriteNumber(i, 1, DataBuf[i]);
    end;
+
+
+   RealFFT(@DataBuf, samples_len);
+   dF := sample_rate / ((samples_len-1) * 2);
+
+   if FileExists(TemplateFile) then begin
+      ws := wb.GetNextWorksheet(ws);
+   end else begin
+      ws := wb.AddWorksheet('Spectrum');
+   end;
+
+   // Записываем ячейки
+   for i:=0 to samples_len-1 do begin
+       ws.WriteNumber(i, 0, dF * i);
+       ws.WriteNumber(i, 1, DataBuf[i]);
+   end;
+
 
    // Сохраняем электронную таблицу в файл
    wb.WriteToFile(ExpandFileName(OutputFile, aDir), sfOOXML, True);
@@ -228,6 +251,11 @@ try
              CheckDirForData(ExpandFileName(Info.Name, aDir));
 
              ScanFilesDir(ExpandFileName(Info.Name, aDir));
+
+             FormMain.pbProgress.StepIt;
+             Application.ProcessMessages;
+             if StopProcess then
+                break;
           end;
 
       Until FindNext(info)<>0;

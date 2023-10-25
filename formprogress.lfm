@@ -1,10 +1,36 @@
 object FormMain: TFormMain
   Left = 700
-  Height = 118
+  Height = 37
   Top = 343
-  Width = 917
+  Width = 480
+  ActiveControl = BitBtnStop
+  BorderIcons = []
   BorderStyle = bsDialog
-  Caption = 'FormMain'
+  Caption = 'Progress'
+  ClientHeight = 37
+  ClientWidth = 480
   DesignTimePPI = 120
+  Position = poScreenCenter
   LCLVersion = '3.99.0.0'
+  OnClose = FormClose
+  OnShow = FormShow
+  object pbProgress: TProgressBar
+    Left = 0
+    Height = 37
+    Top = 0
+    Width = 386
+    Align = alClient
+    Step = 1
+    TabOrder = 0
+  end
+  object BitBtnStop: TBitBtn
+    Left = 386
+    Height = 37
+    Top = 0
+    Width = 94
+    Align = alRight
+    Caption = 'Stop'
+    TabOrder = 1
+    OnClick = BitBtnStopClick
+  end
 end
