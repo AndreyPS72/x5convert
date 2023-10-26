@@ -2,8 +2,6 @@ unit formprogress;
 
 {$MODE DelphiUnicode}{$CODEPAGE UTF8}{$H+}
 
-{$OPTIMIZATION OFF, NOREGVAR, UNCERTAIN, NOSTACKFRAME, NOPEEPHOLE, NOLOOPUNROLL, NOTAILREC, NOORDERFIELDS, NOFASTMATH, NOREMOVEEMPTYPROCS, NOCSE, NODFA} //debug Для отладки
-
 interface
 
 uses
@@ -64,6 +62,7 @@ begin
      res:=ConvertX5File(Application.Params[1]);
   end else begin
     if OpenDialogFile.Execute then begin
+       ChDir(ExtractFileDir(Application.Params[0]));
        res:=ConvertX5File(OpenDialogFile.FileName);
     end
   end;

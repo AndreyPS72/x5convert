@@ -74,6 +74,8 @@ begin
   end;
 end;
 
+
+
 var im: TReal64ArrayZeroBased;
 
 procedure RealFFT(const re: PReal64ArrayZeroBased; var N: integer);
@@ -88,15 +90,16 @@ begin
       im[i]:=0;
   end;
   DoFFT(re, @im, count);
-  for i:=0 to count-1 do begin
-      im[i]:=0;
-  end;
+
   scale:=2.0/double(count);
   for i:=0 to count div 2 do begin
       re^[i]:= sqrt(sqr(re^[i])+sqr(im[i]))*scale;
   end;
   N:=(count div 2)+1;
 end;
+
+
+
 
 end.
 

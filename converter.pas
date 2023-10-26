@@ -49,84 +49,24 @@ end;
 
 
 var DataBuf: TReal64ArrayZeroBased;
-    samples_len: integer;
+    ts_nr_of_samples: integer;
     sample_rate: double;
+    sensor_id: string;
+    signal_type: integer;
+    units: integer;
+    create_date,
+    change_date,
+    measure_time: string;
 
-(*
-procedure ExportWaveformToExcel(const aDir: string; var DataBuf: array of double; const DataBufLen: integer; sample_rate: double);
-var ODS: TOds;
-    i: integer;
-    tbl: TOdfTable;
-begin
-
-ODS := nil;
-try
-  ODS := TOds.Create;
-
-  if FileExists(TemplateFile) then begin
-    // Открываю файл по шаблону
-    if not ODS.LoadFromFile(TemplateFile) then
-       Abort;
-  end;
-
-  tbl := ODS.GetTable('Waveform');
-//  ODS.FindAndReplace('_ПолноеНаименование','CompanyLongName');
-
-//  ODS.GenerateDocument(OutputFile, aDir);
-//  ODS.GenerateDocument;
-    ODS.ShowDocument();
-except
-end;
-
-FreeAndNil(ODS);
-
-end;
-*)
-
-(*
-procedure ExportWaveformToExcel(const aDir: string; var DataBuf: array of double; const DataBufLen: integer; sample_rate: double);
-var i: integer;
-    Excel: OLEVariant;
-    Doc: OLEVariant;
+const TemplateFile = 'x5.xlsx';
 const OutputFile = 'data.xlsx';
+
+
+
+function GetExportFileName(const aDir: string): string;
 begin
-
-Excel:= Unassigned;
-CoInitialize(nil);
-
-try
-   Excel:=GetActiveOLEObject('Excel.Application');
-   Excel.Application.Visible := True;
-except
-  try
-    Excel := CreateOLEObject('Excel.Application');
-    Excel.Application.Visible := True;
-  except
-    // Excel Not Installed
-    Abort;
-  end;
+result:=ExpandFileName(OutputFile, aDir);
 end;
-
-try
-    if not FileExists(TemplateFile) then
-       Abort;
-
-    // Открываю файл по шаблону
-    Doc:=Excel.Application.Workbooks.Add(UTF8Decode(TemplateFile));
-
-except
-end;
-
-Excel.Application.ScreenUpdating := False;
-
-
-Excel.Application.ScreenUpdating := True;
-Doc:= Unassigned;
-Excel:= Unassigned;
-
-end;
-*)
-
 
 
 procedure ExportWaveformToExcel(const aDir: string);
@@ -135,12 +75,12 @@ var i: integer;
     ws: TsWorksheet;
     c: PCell;
     dF: double;
-const TemplateFile = './x5.xlsx';
-const OutputFile = 'data.xlsx';
 begin
 
 // Создание рабочей книги
 wb := TsWorkbook.Create;
+wb.Options :=[boCalcBeforeSaving, boReadformulas];
+
 try
    if FileExists(TemplateFile) then begin
       wb.ReadFromFile(TemplateFile, sfOOXML);
@@ -149,19 +89,25 @@ try
       ws := wb.AddWorksheet('Waveform');
    end;
 
-   for i:=0 to samples_len-1 do begin
-         DataBuf[i]:=sin(i*0.01);
-   end;
-
    // Записываем ячейки
-   for i:=0 to samples_len-1 do begin
+   for i:=0 to ts_nr_of_samples-1 do begin
        ws.WriteNumber(i, 0, double(i)/sample_rate);
        ws.WriteNumber(i, 1, DataBuf[i] * 9.81);
    end;
 
+   // Параметры сигнаал
+   ws.WriteText(0, 10, 'sensor_id');        ws.WriteText(0, 11, sensor_id);
+   ws.WriteText(1, 10, 'signal_type');      ws.WriteNumber(1, 11, signal_type);
+   ws.WriteText(2, 10, 'unit');             ws.WriteNumber(2, 11, units);
+   ws.WriteText(3, 10, 'ts_nr_of_samples'); ws.WriteNumber(3, 11, ts_nr_of_samples);
+   ws.WriteText(4, 10, 'sample_rate');      ws.WriteNumber(4, 11, sample_rate);
+   ws.WriteText(5, 10, 'create_date');      ws.WriteText(5, 11, create_date);
+   ws.WriteText(6, 10, 'change_date');      ws.WriteText(6, 11, change_date);
+   ws.WriteText(7, 10, 'measure_time');     ws.WriteText(7, 11, measure_time);
 
-   RealFFT(@DataBuf, samples_len);
-   dF := sample_rate / ((samples_len-1) * 2);
+
+   RealFFT(@DataBuf, ts_nr_of_samples);
+   dF := sample_rate / ((ts_nr_of_samples-1) * 2);
 
    if FileExists(TemplateFile) then begin
       ws := wb.GetNextWorksheet(ws);
@@ -170,14 +116,14 @@ try
    end;
 
    // Записываем ячейки
-   for i:=0 to samples_len-1 do begin
+   for i:=0 to ts_nr_of_samples-1 do begin
        ws.WriteNumber(i, 0, dF * i);
        ws.WriteNumber(i, 1, DataBuf[i] * 9.81);
    end;
 
 
    // Сохраняем электронную таблицу в файл
-   wb.WriteToFile(ExpandFileName(OutputFile, aDir), sfOOXML, True);
+   wb.WriteToFile(GetExportFileName(aDir), sfOOXML, True);
 except
 end;
 wb.Free;
@@ -202,6 +148,8 @@ procedure CheckDirForData(const aDir: string);
 var Doc: TXMLDocument;
     Node: TDOMNode;
     F: longint;
+    DT: TDateTime;
+    s:string;
 begin
 
 if not FileExists(ExpandFileName('procheck_data_signal.xml', aDir)) then
@@ -210,6 +158,8 @@ if not FileExists(ExpandFileName('procheck_data_signal_timestamp.bin', aDir)) th
    Exit;
 
 sample_rate:=2560.0;
+ts_nr_of_samples:=DataBufLen;
+sensor_id:='';
 
 Doc := nil;
 try
@@ -218,10 +168,17 @@ try
    if Assigned(Node) and
       Node.HasChildNodes then begin
      sample_rate:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('sample_rate'));
+     ts_nr_of_samples:=StrToInt(TDOMElement(Node).GetAttribute('ts_nr_of_samples'));
+     sensor_id:=TDOMElement(Node).GetAttribute('sensor_id');
+     signal_type:=StrToInt(TDOMElement(Node).GetAttribute('signal_type'));
+     units:=StrToInt(TDOMElement(Node).GetAttribute('unit'));
+     DT:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('create_date')); create_date:=DateTimeToStr(DT);
+     DT:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('change_date')); change_date:=DateTimeToStr(DT);
+     DT:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('measure_time')); measure_time:=DateTimeToStr(DT);
    end;
 
    F:=FileOpen(ExpandFileName('procheck_data_signal_timestamp.bin', aDir), fmOpenRead);
-   samples_len:=FileRead (F, DataBuf, DataBufLen*sizeof(double)) div sizeof(double);
+   ts_nr_of_samples:=FileRead (F, DataBuf, DataBufLen*sizeof(double)) div sizeof(double);
    FileClose(F);
 
    ExportWaveformToExcel(aDir);
@@ -302,9 +259,24 @@ end;
 
 
 
+
+procedure RealFFTTest();
+var i: integer;
+begin
+ts_nr_of_samples:=8192;
+for i:=0 to ts_nr_of_samples-1 do begin
+      DataBuf[i]:=sin(i*0.01);
+end;
+RealFFT(@DataBuf, ts_nr_of_samples);
+end;
+
+
+
+
 function ConvertX5File(const aFileName: string): integer;
 var FilesDir: string;
 begin
+
 if not FileExists(aFileName) then
    Exit(1);
 
@@ -325,6 +297,8 @@ ScanFilesDir(FilesDir);
 
 Result:=0;
 end;
+
+
 
 
 end.
