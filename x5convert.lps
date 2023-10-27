@@ -31,8 +31,8 @@
         <Filename Value="converter.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="150"/>
-        <CursorPos X="75" Y="173"/>
+        <TopLine Value="159"/>
+        <CursorPos X="27" Y="172"/>
         <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -181,7 +181,7 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="converter.pas"/>
         <Caret Line="179" Column="23" TopLine="167"/>
@@ -253,10 +253,6 @@
       <Position>
         <Filename Value="formprogress.pas"/>
         <Caret Line="24" Column="41"/>
-      </Position>
-      <Position>
-        <Filename Value="converter.pas"/>
-        <Caret Line="151" Column="14" TopLine="157"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>

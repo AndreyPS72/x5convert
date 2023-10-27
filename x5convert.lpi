@@ -23,6 +23,9 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="x5convert"/>
+          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
@@ -100,6 +103,9 @@
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="x5convert.exe"/>
+    </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
