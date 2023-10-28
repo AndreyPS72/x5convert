@@ -22,7 +22,7 @@ begin
     {$endIf}
 
     RequireDerivedFormResource:=True;
-    Application.Scaled:=True;
+  Application.Scaled:=True;
     Application.Initialize;
     Application.CreateForm(TFormMain, FormMain);
     Application.Run;

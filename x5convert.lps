@@ -3,13 +3,13 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="win64"/>
+    <BuildModes Active="Linux"/>
     <Units>
       <Unit>
         <Filename Value="x5convert.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="30" Y="25"/>
+        <CursorPos X="28" Y="25"/>
         <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -133,6 +133,7 @@
         <TopLine Value="1179"/>
         <CursorPos Y="1196"/>
         <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\lazarus\config_lazarus\onlinepackagemanager\packages\fpspreadsheet\source\common\fpspreadsheet.pas"/>
@@ -141,6 +142,7 @@
         <TopLine Value="6766"/>
         <CursorPos Y="6781"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\lazarus\config_lazarus\onlinepackagemanager\packages\fpspreadsheet\source\common\fpsreaderwriter.pas"/>
@@ -149,12 +151,14 @@
         <TopLine Value="863"/>
         <CursorPos Y="878"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\lazarus\config_lazarus\onlinepackagemanager\packages\fpspreadsheet\source\common\fpsallformats.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="50" Y="13"/>
         <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\lazarus\lazarus\lcl\forms.pp"/>
@@ -179,6 +183,7 @@
         <TopLine Value="1726"/>
         <CursorPos X="54" Y="1869"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="28">
