@@ -12,3 +12,5 @@ x5convert
 x5convert.exe
 x5convert.lps
 x5convert.lps
+*.dbg
+x5convert.zip

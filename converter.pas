@@ -12,6 +12,7 @@ function ConvertX5File(const aFileName: string): integer;
 implementation
 uses Forms
      , SysUtils
+     , FileUtil
      , Zipper
      , Laz2_DOM
      , Laz2_XMLRead
@@ -59,22 +60,42 @@ var DataBuf: TReal64ArrayZeroBased;
     measure_time: string;
 
 const TemplateFile = 'x5.xlsx';
-const OutputFile = 'data.xlsx';
+//const OutputFile = 'data.xlsx';
+
+var UnzippedFilesDir: string;
 
 
-
-function GetExportFileName(const aDir: string): string;
+function GetExportFileName(const aDir: string; const DT: TDateTime; const sensor_id: UnicodeString): string;
+var OutputFile: UnicodeString;
 begin
+OutputFile:=FormatDateTime('yyymmdd_hhnnss',DT)+'_'+sensor_id+'.xlsx';
 result:=ExpandFileName(OutputFile, aDir);
 end;
 
 
-procedure ExportWaveformToExcel(const aDir: string);
+function GetExportSummaryFileName(const aDir: string; const DT: TDateTime; const sensor_id: UnicodeString): string;
+var OutputFile: UnicodeString;
+    OutputDir: UnicodeString;
+begin
+OutputDir:=ExpandFileName('id_'+sensor_id, UnzippedFilesDir);
+if not DirectoryExists(OutputDir) then
+   MkDir(OutputDir);
+OutputFile:=GetExportFileName(aDir, DT, sensor_id);
+OutputFile:=ReplaceStr(OutputFile, UnzippedFilesDir, '');
+OutputFile:=ReplaceStr(OutputFile, '\', '_');
+OutputFile:=ReplaceStr(OutputFile, '/', '_');
+result:=ExpandFileName(OutputFile, OutputDir);
+end;
+
+
+
+procedure ExportWaveformToExcel(const aDir: string; const DT: TDateTime; const sensor_id: UnicodeString);
 var i: integer;
     wb: TsWorkbook;
     ws: TsWorksheet;
     c: PCell;
-    dF: double;
+    dF, v: double;
+    name_summary: UnicodeString;
 begin
 
 // Создание рабочей книги
@@ -105,7 +126,6 @@ try
    ws.WriteText(6, 10, 'change_date');      ws.WriteText(6, 11, change_date);
    ws.WriteText(7, 10, 'measure_time');     ws.WriteText(7, 11, measure_time);
 
-
    RealFFT(@DataBuf, ts_nr_of_samples);
    dF := sample_rate / ((ts_nr_of_samples-1) * 2);
 
@@ -116,17 +136,30 @@ try
    end;
 
    // Записываем ячейки
-   for i:=0 to ts_nr_of_samples-1 do begin
-       ws.WriteNumber(i, 0, dF * i);
-       ws.WriteNumber(i, 1, DataBuf[i] * 9.81);
+   ws.WriteNumber(0, 0, 0);
+   ws.WriteNumber(0, 1, DataBuf[0] * 9.81); // Acc[0]
+   ws.WriteNumber(0, 2, 0); // Vel[0]
+   ws.WriteNumber(0, 3, 0); // Disp[0]
+
+   for i:=1 to ts_nr_of_samples-1 do begin
+       ws.WriteNumber(i, 0, dF * double(i));
+       v:=DataBuf[i] * 9.81;
+       ws.WriteNumber(i, 1, v); // Acc
+       v:=v * 1000.0 / (2.0 * Pi * dF * double(i));
+       ws.WriteNumber(i, 2, v); // Vel
+       v:=v * 1000.0 / (2.0 * Pi * dF * double(i));
+       ws.WriteNumber(i, 3, v); // Disp
    end;
 
-
    // Сохраняем электронную таблицу в файл
-   wb.WriteToFile(GetExportFileName(aDir), sfOOXML, True);
+   wb.WriteToFile(GetExportFileName(aDir, DT, sensor_id), sfOOXML, True);
+
+   CopyFile(GetExportFileName(aDir, DT, sensor_id), GetExportSummaryFileName(aDir, DT, sensor_id));
+
 except
 end;
 wb.Free;
+
 end;
 
 
@@ -169,7 +202,7 @@ try
       Node.HasChildNodes then begin
      sample_rate:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('sample_rate'));
      ts_nr_of_samples:=StrToInt(TDOMElement(Node).GetAttribute('ts_nr_of_samples'));
-     sensor_id:=TDOMElement(Node).GetAttribute('sensor_id');
+     sensor_id:=Trim(TDOMElement(Node).GetAttribute('sensor_id'));
      signal_type:=StrToInt(TDOMElement(Node).GetAttribute('signal_type'));
      units:=StrToInt(TDOMElement(Node).GetAttribute('unit'));
      DT:=StrToFloatUniversal(TDOMElement(Node).GetAttribute('create_date')); create_date:=DateTimeToStr(DT);
@@ -181,7 +214,7 @@ try
    ts_nr_of_samples:=FileRead (F, DataBuf, DataBufLen*sizeof(double)) div sizeof(double);
    FileClose(F);
 
-   ExportWaveformToExcel(aDir);
+   ExportWaveformToExcel(aDir, DT, sensor_id);
 
 except
 end;
@@ -274,7 +307,6 @@ end;
 
 
 function ConvertX5File(const aFileName: string): integer;
-var FilesDir: string;
 begin
 
 if not FileExists(aFileName) then
@@ -283,17 +315,17 @@ if not FileExists(aFileName) then
 FormMain.Show;
 Application.ProcessMessages;
 
-FilesDir:=ExtractFileName(aFileName);
-if Pos('.', FilesDir)>0 then
-   FilesDir:=Copy(FilesDir, 1, Pos('.', FilesDir)-1);
-FilesDir:='./'+ FilesDir;
-UnZip(aFileName, FilesDir);
+UnzippedFilesDir:=ExtractFileName(aFileName);
+if Pos('.', UnzippedFilesDir)>0 then
+   UnzippedFilesDir:=Copy(UnzippedFilesDir, 1, Pos('.', UnzippedFilesDir)-1);
+UnzippedFilesDir:='./'+ UnzippedFilesDir;
+UnZip(aFileName, UnzippedFilesDir);
 
 count_files:=0;
-CountFiles(FilesDir);
+CountFiles(UnzippedFilesDir);
 FormMain.pbProgress.Max:=count_files;
 
-ScanFilesDir(FilesDir);
+ScanFilesDir(UnzippedFilesDir);
 
 Result:=0;
 end;

@@ -3,14 +3,15 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Linux"/>
+    <BuildModes Active="win64"/>
     <Units>
       <Unit>
         <Filename Value="x5convert.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="28" Y="25"/>
-        <UsageCount Value="49"/>
+        <TopLine Value="2"/>
+        <CursorPos Y="16"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -22,7 +23,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -31,9 +32,12 @@
         <Filename Value="converter.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="159"/>
-        <CursorPos X="27" Y="172"/>
-        <UsageCount Value="49"/>
+        <TopLine Value="46"/>
+        <CursorPos X="27" Y="72"/>
+        <UsageCount Value="54"/>
+        <Bookmarks Count="1">
+          <Item0 Y="129"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -44,7 +48,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="70"/>
         <CursorPos Y="93"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="38"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -185,123 +189,156 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
+      <Unit>
+        <Filename Value="..\lazarus\fpcsrc\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\lazarus\ccr\fpspreadsheet\source\common\fpsfunc.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1598"/>
+        <CursorPos Y="1612"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\lazarus\ccr\fpspreadsheet\source\common\fpspreadsheet.pas"/>
+        <UnitName Value="fpSpreadsheet"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7017"/>
+        <CursorPos Y="7031"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\lazarus\ccr\fpspreadsheet\source\common\fpsexprparser.pas"/>
+        <UnitName Value="fpsExprParser"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4078"/>
+        <CursorPos Y="4092"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="28">
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="179" Column="23" TopLine="167"/>
-      </Position>
-      <Position>
-        <Filename Value="converter.pas"/>
-        <Caret Line="231" Column="8" TopLine="215"/>
+        <Caret Line="72" TopLine="54"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="52" Column="21" TopLine="34"/>
+        <Caret Line="141" Column="14" TopLine="127"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="150" Column="4" TopLine="144"/>
+        <Caret Line="150" TopLine="139"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="178" TopLine="162"/>
-      </Position>
-      <Position>
-        <Filename Value="rfft.pas"/>
-        <Caret Line="15" Column="11"/>
-      </Position>
-      <Position>
-        <Filename Value="rfft.pas"/>
-        <Caret Line="82" Column="5" TopLine="66"/>
+        <Caret Line="80" TopLine="67"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="155" TopLine="145"/>
+        <Caret Line="122" Column="51" TopLine="108"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="175" TopLine="157"/>
+        <Caret Line="80" TopLine="65"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="326" Column="57" TopLine="305"/>
+        <Caret Line="146" TopLine="124"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="360" TopLine="332"/>
-      </Position>
-      <Position>
-        <Filename Value="rfft.pas"/>
-        <Caret Line="86" TopLine="70"/>
-      </Position>
-      <Position>
-        <Filename Value="rfft.pas"/>
-        <Caret Line="93" TopLine="70"/>
+        <Caret Line="149" TopLine="133"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="196" Column="37" TopLine="166"/>
-      </Position>
-      <Position>
-        <Filename Value="formprogress.pas"/>
-        <Caret Line="67" Column="14" TopLine="43"/>
+        <Caret Line="141" Column="12" TopLine="127"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="79" Column="31" TopLine="64"/>
+        <Caret Line="79" Column="27" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="84" Column="139" TopLine="64"/>
-      </Position>
-      <Position>
-        <Filename Value="formprogress.pas"/>
-        <Caret Line="24" Column="41"/>
+        <Caret Line="80" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="176" Column="76" TopLine="156"/>
+        <Caret Line="81" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="174" TopLine="156"/>
+        <Caret Line="82" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="175" TopLine="156"/>
+        <Caret Line="83" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="176" TopLine="156"/>
+        <Caret Line="86" Column="46" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="179" TopLine="156"/>
+        <Caret Line="81" Column="23" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="174" TopLine="156"/>
+        <Caret Line="80" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="175" TopLine="156"/>
+        <Caret Line="82" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="176" TopLine="156"/>
+        <Caret Line="83" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="179" TopLine="156"/>
+        <Caret Line="84" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="174" TopLine="156"/>
+        <Caret Line="85" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="175" TopLine="156"/>
+        <Caret Line="86" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="78" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="79" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="78" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="87" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="104" TopLine="90"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="92" Column="6" TopLine="76"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="162" Column="10" TopLine="144"/>
+      </Position>
+      <Position>
+        <Filename Value="converter.pas"/>
+        <Caret Line="39" Column="16" TopLine="11"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -310,6 +347,7 @@
         <Mode Name="default">
           <local>
             <CommandLineParams Value="SM_STB_03_2023.x5"/>
+            <LaunchingApplication PathPlusParams="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
           </local>
         </Mode>
       </Modes>
@@ -321,17 +359,7 @@
       <List Name="CommandLineParameters" Count="1">
         <Item1 Value="SM_STB_03_2023.x5"/>
       </List>
+      <List Name="WorkingDirectory" Type="File" Count="1"/>
     </HistoryLists>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="converter.pas"/>
-        <Line Value="302"/>
-      </Item>
-    </BreakPoints>
-  </Debugging>
 </CONFIG>
