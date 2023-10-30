@@ -9,9 +9,7 @@
         <Filename Value="x5convert.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2"/>
-        <CursorPos Y="16"/>
-        <UsageCount Value="54"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -22,8 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <CursorPos Y="24"/>
-        <UsageCount Value="54"/>
+        <TopLine Value="49"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -32,11 +30,11 @@
         <Filename Value="converter.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="46"/>
-        <CursorPos X="27" Y="72"/>
-        <UsageCount Value="54"/>
+        <TopLine Value="112"/>
+        <CursorPos X="34" Y="117"/>
+        <UsageCount Value="55"/>
         <Bookmarks Count="1">
-          <Item0 Y="129"/>
+          <Item0 Y="126"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -46,9 +44,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="rFFT"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="70"/>
-        <CursorPos Y="93"/>
-        <UsageCount Value="38"/>
+        <TopLine Value="7"/>
+        <CursorPos X="15" Y="18"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -222,18 +220,6 @@
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="converter.pas"/>
-        <Caret Line="72" TopLine="54"/>
-      </Position>
-      <Position>
-        <Filename Value="converter.pas"/>
-        <Caret Line="141" Column="14" TopLine="127"/>
-      </Position>
-      <Position>
-        <Filename Value="converter.pas"/>
-        <Caret Line="150" TopLine="139"/>
-      </Position>
-      <Position>
-        <Filename Value="converter.pas"/>
         <Caret Line="80" TopLine="67"/>
       </Position>
       <Position>
@@ -340,6 +326,18 @@
         <Filename Value="converter.pas"/>
         <Caret Line="39" Column="16" TopLine="11"/>
       </Position>
+      <Position>
+        <Filename Value="x5convert.lpr"/>
+        <Caret Line="16" TopLine="2"/>
+      </Position>
+      <Position>
+        <Filename Value="formprogress.pas"/>
+        <Caret Line="24"/>
+      </Position>
+      <Position>
+        <Filename Value="rfft.pas"/>
+        <Caret Line="78" Column="21" TopLine="70"/>
+      </Position>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -359,7 +357,6 @@
       <List Name="CommandLineParameters" Count="1">
         <Item1 Value="SM_STB_03_2023.x5"/>
       </List>
-      <List Name="WorkingDirectory" Type="File" Count="1"/>
     </HistoryLists>
   </ProjectSession>
 </CONFIG>

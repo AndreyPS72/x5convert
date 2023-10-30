@@ -2,8 +2,6 @@ unit converter;
 
 {$MODE DelphiUnicode}{$CODEPAGE UTF8}{$H+}
 
-{$OPTIMIZATION OFF, NOREGVAR, UNCERTAIN, NOSTACKFRAME, NOPEEPHOLE, NOLOOPUNROLL, NOTAILREC, NOORDERFIELDS, NOFASTMATH, NOREMOVEEMPTYPROCS, NOCSE, NODFA} //debug Для отладки
-
 interface
 
 function ConvertX5File(const aFileName: string): integer;
@@ -19,7 +17,6 @@ uses Forms
      , Laz2_XMLUtils
      , StrUtils
      , fpspreadsheet
-//     , fpsopendocument
      , fpstypes
      , lazutf8
      , xlsxooxml
